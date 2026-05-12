@@ -91,9 +91,6 @@ SOAR-Lab/
 └── workflow/
     └── SOAR.json                           # Shuffle workflow (import into Shuffle)
 ```
-
-> **Note:** Files with the `.txt` extension are sample configuration files. When deploying, rename them by removing the `.txt` extension and place them in the correct system path.
-
 ---
 
 ## Deployment Guide
