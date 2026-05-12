@@ -1,23 +1,23 @@
-# 🛡️ SOAR-Lab
+# SOAR-Lab
 
 A hands-on lab for **Security Orchestration, Automation and Response (SOAR)** integrating open-source security tools: **Wazuh**, **TheHive**, **Cortex**, and **Shuffle**.
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Architecture Overview](#️-architecture-overview)
-- [Components](#-components)
-- [System Requirements](#-system-requirements)
-- [Directory Structure](#-directory-structure)
-- [Deployment Guide](#-deployment-guide)
-- [Workflow](#-workflow)
-- [Configuration Details](#️-configuration-details)
-- [Active Response](#-active-response)
+- [Architecture Overview](#architecture-overview)
+- [Components](#components)
+- [System Requirements](#system-requirements)
+- [Directory Structure](#directory-structure)
+- [Deployment Guide](#deployment-guide)
+- [Workflow](#workflow)
+- [Configuration Details](#configuration-details)
+- [Active Response](#active-response)
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────┐
@@ -47,7 +47,7 @@ When a security event occurs on an endpoint (e.g., a suspicious file is dropped 
 
 ---
 
-## 🔧 Components
+## Components
 
 | Component | Version | Port | Role |
 |---|---|---|---|
@@ -62,7 +62,7 @@ When a security event occurs on an endpoint (e.g., a suspicious file is dropped 
 
 ---
 
-## 💻 System Requirements
+## System Requirements
 
 - **Docker** and **Docker Compose** (latest version)
 - RAM: Minimum **8 GB** (16 GB recommended)
@@ -71,7 +71,7 @@ When a security event occurs on an endpoint (e.g., a suspicious file is dropped 
 
 ---
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```
 SOAR-Lab/
@@ -96,7 +96,7 @@ SOAR-Lab/
 
 ---
 
-## 🚀 Deployment Guide
+## Deployment Guide
 
 ### Step 1: Start TheHive, Cortex, and Shuffle
 
@@ -196,7 +196,7 @@ chmod +x /var/ossec/active-response/bin/custom-delete.sh
 
 ---
 
-## 🔄 Workflow
+## Workflow
 
 The Shuffle workflow (`SOAR.json`) consists of **12 nodes** split into 2 main phases:
 
@@ -265,7 +265,7 @@ The Shuffle workflow (`SOAR.json`) consists of **12 nodes** split into 2 main ph
 
 ---
 
-## ⚙️ Configuration Details
+## Configuration Details
 
 ### Alert Structure Sent to TheHive
 
@@ -292,7 +292,7 @@ The Shuffle workflow (`SOAR.json`) consists of **12 nodes** split into 2 main ph
 
 ---
 
-## 🤖 Active Response
+## Active Response
 
 The `custom-delete.sh` script is triggered by Wazuh to automatically remove malicious files from endpoints.
 
@@ -321,7 +321,7 @@ The `custom-delete.sh` script is triggered by Wazuh to automatically remove mali
 
 ---
 
-## 📊 Use Case: File Integrity Monitoring + Auto-Response
+## Use Case: File Integrity Monitoring + Auto-Response
 
 1. An attacker drops a suspicious file into `/home/user/Downloads/`
 2. **Wazuh Syscheck** detects the new file and generates an alert (level ≥ 7)
@@ -337,9 +337,9 @@ The `custom-delete.sh` script is triggered by Wazuh to automatically remove mali
 
 ---
 
-## 🔐 Security Notice
+## Security Notice
 
-> ⚠️ **Important:** This is a lab environment. Before moving to production, make sure to:
+> **Important:** This is a lab environment. Before moving to production, make sure to:
 > - Change all default passwords
 > - Enable SSL/TLS on all services
 > - Restrict network access between containers
@@ -347,7 +347,7 @@ The `custom-delete.sh` script is triggered by Wazuh to automatically remove mali
 
 ---
 
-## 📚 References
+## References
 
 - [Wazuh Documentation](https://documentation.wazuh.com/)
 - [TheHive Documentation](https://docs.strangebee.com/)
@@ -356,6 +356,6 @@ The `custom-delete.sh` script is triggered by Wazuh to automatically remove mali
 
 ---
 
-## 👤 Author
+## Author
 
 **Hoang Quan** — SOAR Lab for Security Research & Learning
