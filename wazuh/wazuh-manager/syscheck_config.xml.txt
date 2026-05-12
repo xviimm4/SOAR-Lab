@@ -1,0 +1,3 @@
+<syscheck>
+  <directories realtime="yes" check_all="yes">/home/hquan/Downloads</directories>
+</syscheck>

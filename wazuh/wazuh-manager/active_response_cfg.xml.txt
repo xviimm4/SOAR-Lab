@@ -1,0 +1,10 @@
+<command>
+  <name>custom_delete</name>
+  <executable>custom-delete.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>custom_delete</command>
+  <location>local</location>
+</active-response>

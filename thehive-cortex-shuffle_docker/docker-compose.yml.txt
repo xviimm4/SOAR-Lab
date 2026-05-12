@@ -1,0 +1,147 @@
+services
+  # 1. Elasticsearch (Search engine for TheHive and Cortex)
+  elasticsearch
+    image elasticsearch7.17.9
+    container_name elasticsearch
+    environment
+      - http.host=0.0.0.0
+      - discovery.type=single-node
+      - cluster.name=hive
+      - script.allowed_types=inline
+      - thread_pool.search.queue_size=100000
+      - thread_pool.write.queue_size=10000
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits
+      nofile
+        soft 65536
+        hard 65536
+    ports
+      - 92009200
+
+  # 2. Cassandra (Main database for TheHive)
+  cassandra
+    image cassandra3.11
+    container_name cassandra
+    environment
+      - MAX_HEAP_SIZE=512M
+      - HEAP_NEWSIZE=200M
+      - CASSANDRA_CLUSTER_NAME=TheHive
+    ports
+      - 90429042
+
+  # 3. Cortex (Analyzers and responders execution environment)
+  cortex
+    image thehiveprojectcortexlatest-withdeps
+    container_name cortex
+    environment
+      - job_directory=optcortexjobs
+    volumes
+      - varrundocker.sockvarrundocker.sock
+      - .Cortex-Analyzersanalyzersoptcortexanalyzers
+      - .Cortex-Analyzersrespondersoptcortexresponders
+    ports
+      - 90019001
+    depends_on
+      - elasticsearch
+    command
+      - --es-uri
+      - httpelasticsearch9200
+      - --analyzer-url
+      - optcortexanalyzers
+      - --responder-url
+      - optcortexresponders
+
+  # 4. TheHive (Security Incident Response Platform)
+  thehive
+    image thehiveprojectthehive4latest
+    container_name thehive
+    environment
+      - CASSANDRA_HOSTNAMES=cassandra
+    ports
+      - 90009000
+    depends_on
+      - cassandra
+      - elasticsearch
+    command
+      - --cortex-hostnames
+      - cortex
+      - --cortex-port
+      - 9001
+      - --cortex-keys
+      - <YOUR_CORTEX_KEY>
+
+  # 5. OpenSearch (Database backend for Shuffle)
+  shuffle-opensearch
+    image opensearchprojectopensearch2.5.0
+    container_name shuffle-opensearch
+    environment
+      - discovery.type=single-node
+      - plugins.security.disabled=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits
+      nofile
+        soft 65536
+        hard 65536
+    ports
+      - 92029200
+
+
+  # 6. Shuffle Backend
+  shuffle-backend
+    image ghcr.ioshuffleshuffle-backendlatest
+    container_name shuffle-backend
+    environment
+      - DATASTORE_EMULATOR_HOST=shuffle-firestore8080
+      - SHUFFLE_OPENSEARCH_URL=httpshuffle-opensearch9200
+      - SHUFFLE_OPENSEARCH_SKIPSSL_VERIFY=true
+      - SHUFFLE_DEFAULT_USERNAME=admin
+      - SHUFFLE_DEFAULT_PASSWORD=password
+      - SHUFFLE_DEFAULT_APIKEY=myshuffle-api-key-123456
+      - BASE_URL=httplocalhost5001
+    ports
+      - 50015001
+    depends_on
+      - shuffle-opensearch
+      - shuffle-firestore
+    volumes
+      - varrundocker.sockvarrundocker.sock
+
+  # 7. Shuffle Frontend
+  shuffle-frontend
+    image ghcr.ioshuffleshuffle-frontendlatest
+    container_name shuffle-frontend
+    environment
+      - BACKEND_HOSTNAME=shuffle-backend
+    ports
+      - 300180
+    depends_on
+      - shuffle-backend
+
+  # 8. Firestore emulator (Shuffle metadata store)
+  shuffle-firestore
+    image mtlynchfirestore-emulatorlatest
+    container_name shuffle-firestore
+    environment
+      - FIRESTORE_PROJECT_ID=shuffle
+      - PORT=8080
+    ports
+      - 80808080
+  # 9. Shuffle Orborus (Worker)
+  shuffle-orborus
+    image ghcr.ioshuffleshuffle-orboruslatest
+    container_name shuffle-orborus
+    environment
+      - SHUFFLE_APP_HOTLOAD_FOLDER=.shuffle-apps
+      - ENVIRONMENT_NAME=Shuffle
+      - BASE_URL=httpshuffle-backend5001
+      - DOCKER_API_VERSION=1.40
+      - SHUFFLE_BASE_IMAGE_NAME=shuffle-subflow
+      - SHUFFLE_BASE_IMAGE_REGISTRY=docker.iofrikky
+      - SHUFFLE_BASE_IMAGE_TAG_SUFFIX=-latest
+      - CLEANUP=false
+      - ORBORUS_CONTAINER_NAME=shuffle-orborus
+      - SHUFFLE_PASS_WORKER_PROXY=false
+    volumes
+      - varrundocker.sockvarrundocker.sock
+    depends_on
+      - shuffle-backend

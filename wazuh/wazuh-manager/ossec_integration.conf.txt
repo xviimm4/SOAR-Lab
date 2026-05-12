@@ -1,0 +1,6 @@
+<ossec_config>
+  <integration>
+    <name>custom-shuffle</name>
+    <hook_url>YOUR_SHUFFLE_WEBHOOK_URL</hook_url> <level>7</level> <alert_format>json</alert_format>
+  </integration>
+</ossec_config>
