@@ -76,20 +76,20 @@ When a security event occurs on an endpoint (e.g., a suspicious file is dropped 
 ```
 SOAR-Lab/
 ├── thehive-cortex-shuffle_docker/
-│   └── docker-compose.yml.txt      # Docker Compose for TheHive, Cortex, Shuffle
+│   └── docker-compose.yml      # Docker Compose for TheHive, Cortex, Shuffle
 │
 ├── wazuh/
 │   ├── wazuh-manager/
-│   │   ├── ossec_integration.conf.txt      # Shuffle webhook integration config
-│   │   ├── active_response_cfg.xml.txt     # Active Response configuration
-│   │   └── syscheck_config.xml.txt         # File Integrity Monitoring config
+│   │   ├── ossec_integration.conf      # Shuffle webhook integration config
+│   │   ├── active_response_cfg.xml     # Active Response configuration
+│   │   └── syscheck_config.xml         # File Integrity Monitoring config
 │   │
 │   └── script/
 │       └── active-respone/
-│           └── custom-delete.sh.txt        # Auto file deletion script
+│           └── custom-delete.sh        # Auto file deletion script
 │
 └── workflow/
-    └── SOAR.json                           # Shuffle workflow (import into Shuffle)
+    └── SOAR.json                       # Shuffle workflow (import into Shuffle)
 ```
 ---
 
@@ -99,7 +99,6 @@ SOAR-Lab/
 
 ```bash
 cd thehive-cortex-shuffle_docker
-cp docker-compose.yml.txt docker-compose.yml
 docker-compose up -d
 ```
 
@@ -166,7 +165,7 @@ Add the following to enable automatic file deletion:
 
 ```bash
 # Copy the script to the Wazuh Agent
-cp wazuh/script/active-respone/custom-delete.sh.txt /var/ossec/active-response/bin/custom-delete.sh
+cp wazuh/script/active-respone/custom-delete.sh /var/ossec/active-response/bin/custom-delete.sh
 
 # Grant execute permission
 chmod +x /var/ossec/active-response/bin/custom-delete.sh
